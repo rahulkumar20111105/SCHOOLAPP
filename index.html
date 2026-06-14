@@ -3,211 +3,164 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Secure Free School Portal</title>
+    <title>ERP Administration & School Portal</title>
     <style>
-        * { box-sizing: border-box; font-family: Arial, sans-serif; margin: 0; padding: 0; }
-        body { background: #f4f6f9; padding: 20px; color: #333; }
-        .container { max-width: 500px; margin: 0 auto; background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        h2 { text-align: center; margin-bottom: 20px; color: #2c3e50; }
-        label { display: block; margin: 10px 0 5px; font-weight: bold; }
-        input, select, button { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 6px; font-size: 16px; }
-        button { background: #3498db; color: white; border: none; cursor: pointer; font-weight: bold; }
-        button:hover { background: #2980b9; }
+        * { box-sizing: border-box; font-family: 'Segoe UI', Arial, sans-serif; margin: 0; padding: 0; }
+        body { background: #f0f4f8; color: #334155; padding: 15px; }
+        .wrapper { max-width: 750px; margin: 0 auto; background: #fff; border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); overflow: hidden; }
+        .nav-header { background: #1e293b; color: #fff; padding: 20px; text-align: center; }
+        .tab-menu { display: flex; background: #334155; overflow-x: auto; }
+        .tab-btn { flex: 1; padding: 12px; border: none; background: none; color: #94a3b8; font-weight: 600; cursor: pointer; text-align: center; white-space: nowrap; }
+        .tab-btn.active { color: #fff; background: #1e293b; border-bottom: 3px solid #3b82f6; }
+        .view-panel { padding: 25px; display: none; }
+        .view-panel.active { display: block; }
+        label { display: block; margin: 12px 0 6px; font-weight: 600; font-size: 14px; }
+        input, select, textarea, button { width: 100%; padding: 12px; margin-bottom: 14px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 15px; outline: none; }
+        button { background: #2563eb; color: white; border: none; cursor: pointer; font-weight: bold; }
+        button:hover { background: #1d4ed8; }
+        .id-card { border: 2px solid #334155; border-radius: 12px; padding: 20px; max-width: 350px; margin: 0 auto; background: linear-gradient(135deg, #fff, #f8fafc); position: relative; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .id-card h3 { text-align: center; color: #1e293b; border-bottom: 2px solid #3b82f6; padding-bottom: 8px; margin-bottom: 12px; }
+        .id-flex { display: flex; gap: 15px; align-items: center; }
+        .id-img { width: 90px; height: 110px; border: 1px dashed #94a3b8; border-radius: 6px; object-fit: cover; background: #f1f5f9; }
+        .metrics-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
+        .metric-box { background: #f8fafc; padding: 15px; border-left: 4px solid #10b981; border-radius: 6px; }
+        .metric-box.pending { border-left-color: #ef4444; }
+        .metric-box span { display: block; font-size: 12px; color: #64748b; }
+        .metric-box h4 { font-size: 20px; color: #1e293b; }
+        .feed-item { background: #f8fafc; border: 1px solid #e2e8f0; padding: 15px; border-radius: 8px; margin-bottom: 12px; }
         .hidden { display: none; }
-        .card { background: #fdfdfd; border: 1px solid #e0e0e0; padding: 15px; border-radius: 8px; margin-bottom: 15px; }
-        .card h3 { margin-bottom: 5px; color: #2c3e50; }
-        .tag { display: inline-block; background: #e8f4fd; color: #3498db; padding: 3px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; margin-bottom: 10px; }
-        iframe { width: 100%; height: 200px; border: none; border-radius: 6px; margin-top: 10px; }
-        .btn-download { background: #2ecc71; text-decoration: none; display: block; text-align: center; color: white; padding: 10px; border-radius: 6px; font-weight: bold; margin-top: 10px; }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <!-- PORTAL LOGIN SCREEN -->
-    <div id="login-screen">
-        <h2>School Portal Login</h2>
-        <label>Select Your Access Role</label>
-        <select id="role-select">
-            <option value="student">I am a Student</option>
-            <option value="teacher">I am a Teacher</option>
-        </select>
-        
-        <label>Enter Secret Access Password</label>
-        <input type="password" id="password-input" placeholder="Enter password...">
-        <button onclick="handleLogin()">Log Into Portal</button>
+<div class="wrapper">
+    <div class="nav-header">
+        <h2 id="portal-title">Digital School Campus System</h2>
     </div>
 
-    <!-- PORTAL TEACHER DASHBOARD -->
-    <div id="teacher-screen" class="hidden">
-        <h2>Teacher Dashboard</h2>
-        <label>Resource Type</label>
-        <select id="upload-type">
-            <option value="video">Video Lecture (YouTube Link)</option>
-            <option value="pdf">Digital Notes / Assignment PDF Link</option>
+    <!-- LOGIN SCREEN -->
+    <div id="auth-view" class="view-panel active">
+        <h2>System Sign-In</h2>
+        <label>Select Workspace Terminal Mode</label>
+        <select id="user-role">
+            <option value="student">Student Terminal Access Node</option>
+            <option value="teacher">Administration Desk Terminal</option>
         </select>
-
-        <label>Subject Name</label>
-        <input type="text" id="upload-subject" placeholder="e.g., Physics, Chemistry">
-
-        <label>Lecture Title</label>
-        <input type="text" id="upload-title" placeholder="e.g., Chapter 2 Vector Maths">
-
-        <label>Target Student Class</label>
-        <select id="upload-class">
-            <option value="Class 9">Class 9</option>
-            <option value="Class 10">Class 10</option>
-            <option value="Class 11">Class 11</option>
-        </select>
-
-        <label>Paste Asset Link (YouTube Embed or Drive Link)</label>
-        <input type="text" id="upload-link" placeholder="https://...">
-        
-        <button onclick="uploadData()" style="background: #e74c3c;">Upload Asset Securely</button>
-        <button onclick="logout()" style="background: #95a5a6;">Log Out</button>
+        <label>Access Credential Passcode</label>
+        <input type="password" id="user-pass" placeholder="••••••••">
+        <button onclick="authenticatePortal()">Enter Workspace</button>
     </div>
 
-    <!-- PORTAL STUDENT INTERFACE -->
-    <div id="student-screen" class="hidden">
-        <h2 id="student-welcome">Student Portal Dashboard</h2>
-        <div id="lecture-list">Loading class material records...</div>
-        <button onclick="logout()" style="background: #95a5a6; margin-top: 20px;">Log Out</button>
+    <!-- TEACHER ADMINISTRATIVE AREA -->
+    <div id="teacher-view" class="hidden">
+        <div class="tab-menu">
+            <button class="tab-btn active" onclick="switchTab(this, 't-finance')">Finance Counter</button>
+            <button class="tab-btn" onclick="switchTab(this, 't-admissions')">Admissions Desk</button>
+            <button class="tab-btn" onclick="switchTab(this, 't-builders')">Quiz/HW Builder</button>
+            <button class="tab-btn" onclick="switchTab(this, 't-bulletins')">Notices & Bulletins</button>
+        </div>
+
+        <!-- FINANCE TAB -->
+        <div id="t-finance" class="view-panel active">
+            <h3>Institutional Ledger Analytics</h3>
+            <div class="metrics-grid">
+                <div class="metric-box"><span>Today's Cash Collection</span><h4 id="m-collection">₹0</h4></div>
+                <div class="metric-box pending"><span>Total Pending Balances</span><h4 id="m-pending">₹0</h4></div>
+            </div>
+            <h3>Issue New Fees Receipt</h3>
+            <label>Student Profile ID</label><input type="text" id="f-sid" placeholder="e.g., STU1001">
+            <label>Student Full Name</label><input type="text" id="f-name" placeholder="e.g., Rahul Kumar">
+            <label>Current Assigned Class</label>
+            <select id="f-class"><option>Class 9</option><option>Class 10</option><option>Class 11</option></select>
+            <label>Transaction Amount Paid (₹)</label><input type="number" id="f-paid" placeholder="5000">
+            <label>Pending Outstanding Amount (₹)</label><input type="number" id="f-pend" placeholder="1200">
+            <button onclick="submitInvoiceData()">Commit Accounting Receipt</button>
+        </div>
+
+        <!-- ADMISSIONS TAB -->
+        <div id="t-admissions" class="view-panel">
+            <h3>Process New Student Enrolment</h3>
+            <label>Assign Unique Student ID</label><input type="text" id="adm-id" placeholder="e.g., STU1001">
+            <label>Student Full Name</label><input type="text" id="adm-name" placeholder="e.g., Rahul Kumar">
+            <label>Target Academic Class</label>
+            <select id="adm-class"><option>Class 9</option><option>Class 10</option><option>Class 11</option></select>
+            <label>Set Custom Student Password</label><input type="text" id="adm-pass" placeholder="rahul2026">
+            <label>Student Photo Link (Google Drive URL)</label><input type="text" id="adm-photo" placeholder="https://...">
+            <label>Student Contact Phone</label><input type="text" id="adm-phone" placeholder="9999999999">
+            <button onclick="submitAdmissionRecord()">Finalize Enrollment & ID Profile</button>
+        </div>
+
+        <!-- HW QUIZ GENERATOR TAB -->
+        <div id="t-builders" class="view-panel">
+            <h3>Homework Quiz Generator Engine</h3>
+            <label>Target Student Class</label>
+            <select id="q-class"><option>Class 9</option><option>Class 10</option><option>Class 11</option></select>
+            <label>Subject Discipline</label><input type="text" id="q-sub" placeholder="e.g., Science">
+            <label>Evaluation Title Name</label><input type="text" id="q-title" placeholder="e.g., Quiz 1: Mechanics">
+            <label>Quiz Content Details (Text Body)</label>
+            <textarea id="q-json" placeholder="Q1: Define Force? | Ans: Mass x Acceleration"></textarea>
+            <button onclick="submitQuizBuilder()">Deploy Live Assessment</button>
+        </div>
+
+        <!-- NOTICES TAB -->
+        <div id="t-bulletins" class="view-panel">
+            <h3>Publish System Notices & Bulletins</h3>
+            <label>Communication Category Type</label>
+            <select id="b-type"><option>Holiday Notice</option><option>Class Schedule</option><option>Today Target</option></select>
+            <label>Target Classroom Stream</label>
+            <select id="b-class"><option>Class 9</option><option>Class 10</option><option>Class 11</option></select>
+            <label>Message Subject Header</label><input type="text" id="b-title" placeholder="e.g., Summer Holiday Announcement">
+            <label>Notice Content Description</label><textarea id="b-desc" placeholder="Details..."></textarea>
+            <button onclick="submitBulletinMessage()">Broadcast Notice Live</button>
+        </div>
+        <button onclick="logout()" style="background:#64748b; margin-top:20px;">Terminate Session</button>
+    </div>
+
+    <!-- STUDENT VIEW LAYER -->
+    <div id="student-view" class="hidden">
+        <div class="tab-menu">
+            <button class="tab-btn active" onclick="switchTab(this, 's-profile')">Digital ID Card</button>
+            <button class="tab-btn" onclick="switchTab(this, 's-finance')">My Fees Receipts</button>
+            <button class="tab-btn" onclick="switchTab(this, 's-homework')">Homework & Quiz</button>
+            <button class="tab-btn" onclick="switchTab(this, 's-notices')">School Board Notices</button>
+        </div>
+
+        <!-- STUDENT ID CARD -->
+        <div id="s-profile" class="view-panel active">
+            <div class="id-card">
+                <h3>STUDENT ID CARD</h3>
+                <div class="id-flex">
+                    <img id="card-photo" src="" class="id-img" alt="Student Photo">
+                    <div>
+                        <p><strong>Name:</strong> <span id="card-name">...</span></p>
+                        <p><strong>UID:</strong> <span id="card-id">...</span></p>
+                        <p><strong>Class:</strong> <span id="card-class">...</span></p>
+                        <p><strong>Phone:</strong> <span id="card-phone">...</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- STUDENT RECEIPTS -->
+        <div id="s-finance" class="view-panel">
+            <h3>Your Invoice & Receipts History</h3>
+            <div id="student-finance-feed">No data fetched yet.</div>
+        </div>
+
+        <!-- STUDENT EXAMS -->
+        <div id="s-homework" class="view-panel">
+            <h3>Pending Homework Quiz Assessments</h3>
+            <div id="student-quiz-feed">No active homework deployed yet.</div>
+        </div>
+
+        <!-- STUDENT NOTICES -->
+        <div id="s-notices" class="view-panel">
+            <h3>Live Classroom Bulletin Streams</h3>
+            <div id="student-bulletin-feed">Pulling school board notice datasets...</div>
+        </div>
+        <button onclick="logout()" style="background:#64748b; margin-top:20px;">Terminate Session</button>
     </div>
 </div>
 
 <script>
-    // 🛑 LINE 75: यहाँ अपना नया उत्पन्न हुआ गूगल स्क्रिप्ट वेब ऐप URL पेस्ट करें
-    const API_URL = "https://script.google.com/macros/s/AKfycbxdtxvJk-NGXym4owp5ZPYeEM9_NDeo_G5x_7u3iBJD-l37zynQjvYB7gdFVNPxOTlY/exec"; 
-
-    // पासवर्ड डिक्शनरी
-    const LOCAL_PASSWORDS = {
-        teacher: "teacher2026",
-        class9: "student09",
-        class10: "student10",
-        class11: "student11"
-    };
-
-    let userSessionPassword = "";
-    let currentStudentClass = "";
-
-    function handleLogin() {
-        const role = document.getElementById('role-select').value;
-        const password = document.getElementById('password-input').value.trim();
-
-        if (role === 'teacher' && password === LOCAL_PASSWORDS.teacher) {
-            userSessionPassword = password;
-            showScreen('teacher-screen');
-        } else if (role === 'student') {
-            if (password === LOCAL_PASSWORDS.class9) { currentStudentClass = "Class 9"; }
-            else if (password === LOCAL_PASSWORDS.class10) { currentStudentClass = "Class 10"; }
-            else if (password === LOCAL_PASSWORDS.class11) { currentStudentClass = "Class 11"; }
-            
-            if (currentStudentClass !== "") {
-                userSessionPassword = password;
-                showScreen('student-screen');
-                document.getElementById('student-welcome').innerText = `Dashboard (${currentStudentClass})`;
-                loadStudentContent();
-            } else {
-                alert("Invalid Student Access Password!");
-            }
-        } else {
-            alert("Invalid Password Entered!");
-        }
-    }
-
-    function showScreen(screenId) {
-        document.getElementById('login-screen').classList.add('hidden');
-        document.getElementById('teacher-screen').classList.add('hidden');
-        document.getElementById('student-screen').classList.add('hidden');
-        document.getElementById(screenId).classList.remove('hidden');
-    }
-
-    function logout() {
-        document.getElementById('password-input').value = "";
-        userSessionPassword = "";
-        currentStudentClass = "";
-        showScreen('login-screen');
-    }
-
-    // नया अपलोड फ़ंक्शन
-    async function uploadData() {
-        const type = document.getElementById('upload-type').value;
-        const subject = document.getElementById('upload-subject').value.trim();
-        const title = document.getElementById('upload-title').value.trim();
-        const targetClass = document.getElementById('upload-class').value;
-        let link = document.getElementById('upload-link').value.trim();
-
-        if(!subject || !title || !link) return alert("Please fill out all input text items.");
-
-        if (link.includes("watch?v=")) {
-            link = link.replace("watch?v=", "embed/");
-        } else if (link.includes("youtu.be/")) {
-            link = link.replace("youtu.be/", "://youtube.com");
-        }
-
-        const payload = { 
-            authPass: userSessionPassword,
-            id: Date.now(), 
-            type: type, 
-            subject: subject, 
-            class: targetClass, 
-            title: title, 
-            link: link 
-        };
-
-        try {
-            await fetch(API_URL, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: { 'Content-Type': 'text/plain' },
-                body: JSON.stringify(payload)
-            });
-            alert("Success! Material uploaded straight to Google Sheet database.");
-            document.getElementById('upload-subject').value = "";
-            document.getElementById('upload-title').value = "";
-            document.getElementById('upload-link').value = "";
-        } catch (error) {
-            alert("Network submission error.");
-        }
-    }
-
-    // ✅ नया JSONP फ़ंक्शन जो पुराने loadStudentContent को हटाकर सुरक्षा एरर खत्म करता है
-    function loadStudentContent() {
-        const listContainer = document.getElementById('lecture-list');
-        listContainer.innerHTML = "Opening secure link stream...";
-
-        const callbackName = 'jsonp_callback_' + Math.round(Math.random() * 100000);
-        
-        window[callbackName] = function(data) {
-            delete window[callbackName];
-            const oldScript = document.getElementById('jsonp-script-tag');
-            if(oldScript) oldScript.remove();
-
-            listContainer.innerHTML = "";
-            if (!data || data.length === 0) {
-                listContainer.innerHTML = "<p style='text-align:center;color:#666;'>No study updates published for your class room yet.</p>";
-                return;
-            }
-
-            data.reverse().forEach(item => {
-                const card = document.createElement('div');
-                card.className = "card";
-                card.innerHTML = `<span class="tag">${item.subject.toUpperCase()}</span><h3>${item.title}</h3>`;
-
-                if (item.type === 'video') {
-                    card.innerHTML += `<iframe src="${item.link}" allowfullscreen></iframe>`;
-                } else if (item.type === 'pdf') {
-                    card.innerHTML += `<a href="${item.link}" target="_blank" class="btn-download">📥 Open PDF Resources / Homework</a>`;
-                }
-                listContainer.appendChild(card);
-            });
-        };
-
-        const script = document.createElement('script');
-        script.id = 'jsonp-script-tag';
-        script.src = `${API_URL}?pass=${userSessionPassword}&callback=${callbackName}`;
-        document.body.appendChild(script);
-    }
-</script>
-</body>
-</html>
+   const ENGINE_API ="https//script.google.com/macros/s/AKfycbzZWG8k1jwqBSu-A9clTLwES6hmnlhs3IUvAVwa4OdWojJ88-UWT1D1E4rx9B6RXSS6/exec";
