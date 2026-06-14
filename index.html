@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>School Campus ERP - Secure Access</title>
+    <title>Digital School Campus System</title>
     <style>
         :root {
             --primary: #2563eb;
@@ -21,16 +21,12 @@
             padding: 20px;
         }
         .container {
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
             background: white;
             padding: 30px;
             border-radius: 12px;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
-        }
-        h1, h2, h3 {
-            text-align: center;
-            color: var(--primary);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
         }
         .school-header {
             text-align: center;
@@ -38,234 +34,182 @@
             padding-bottom: 15px;
             border-bottom: 3px double var(--primary);
         }
-        .form-group {
-            margin-bottom: 15px;
+        h1, h2, h3 { text-align: center; color: var(--primary); margin-top: 0; }
+        
+        /* Form Styles matching your login screen layout */
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 8px; font-weight: 600; color: var(--dark); }
+        .form-group select, .form-group input {
+            width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 6px; box-sizing: border-box; font-size: 15px;
         }
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: 600;
-        }
-        .form-group input, .form-group select {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #cbd5e1;
-            border-radius: 6px;
-            box-sizing: border-box;
-        }
+        
         button {
-            padding: 12px 24px;
-            font-size: 16px;
-            font-weight: 600;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.2s;
+            padding: 12px 24px; font-size: 16px; font-weight: 600; border: none; border-radius: 6px; cursor: pointer; transition: all 0.2s;
         }
         .btn-primary { background-color: var(--primary); color: white; width: 100%; }
         .btn-success { background-color: var(--success); color: white; }
         .btn-danger { background-color: var(--danger); color: white; }
-        .btn-logout { background-color: #64748b; color: white; padding: 6px 12px; font-size: 14px; float: right; }
-        
+        .btn-logout { background-color: var(--gray); color: white; float: right; padding: 6px 12px; font-size: 14px; }
         button:hover { opacity: 0.9; }
-        
+
         .panel { display: none; }
         .active { display: block; }
-
-        .login-box {
-            max-width: 400px;
-            margin: 40px auto;
-            padding: 20px;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            background: #ffffff;
-        }
-        .student-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px;
-            border-bottom: 1px solid #e2e8f0;
-        }
-        .nav-tabs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-            border-bottom: 1px solid #cbd5e1;
-            padding-bottom: 10px;
-        }
-        .tab-btn {
-            background: #e2e8f0;
-            color: var(--dark);
-            padding: 8px 16px;
-            font-size: 14px;
-        }
-        .tab-btn.active-tab {
-            background: var(--primary);
-            color: white;
-        }
+        .login-card { max-width: 500px; margin: 40px auto; padding: 30px; border: 1px solid #e2e8f0; border-radius: 8px; background: #ffffff; box-shadow: 0 4px 6px rgba(0,0,0,0.02); }
+        
+        /* Dashboard Content Layouts */
+        .nav-tabs { display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 1px solid #cbd5e1; padding-bottom: 10px; }
+        .tab-btn { background: #e2e8f0; color: var(--dark); padding: 8px 16px; font-size: 14px; }
+        .tab-btn.active-tab { background: var(--primary); color: white; }
+        
+        .student-table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        .student-table th, .student-table td { border: 1px solid #e2e8f0; padding: 12px; text-align: left; }
+        .student-table th { background-color: #f1f5f9; }
+        
+        .notice-box { background: #fffbeb; border-left: 4px solid #d97706; padding: 15px; margin-bottom: 15px; border-radius: 4px; }
+        .search-box { width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #cbd5e1; border-radius: 6px; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <!-- Dynamic School Name Header Set By Teacher -->
     <div class="school-header">
-        <h1 id="displaySchoolName">🏫 Global Public School</h1>
-        <p style="color: var(--gray); margin: 5px 0;">Campus Management ERP System</p>
+        <h1 id="displaySchoolName">🏫 Digital School Campus System</h1>
+        <p style="color: var(--gray); margin: 5px 0;">All-In-One Local Cloud ERP Portal</p>
     </div>
 
     <!-- 1. LOGIN PANEL -->
     <div id="loginPanel" class="panel active">
-        <div class="login-box">
-            <h3>Secure Gateway Login</h3>
+        <div class="login-card">
+            <h3>System Sign-In</h3>
             <div class="form-group">
-                <label>Select User Role</label>
+                <label>Select Workspace Terminal Mode</label>
                 <select id="loginRole">
-                    <option value="teacher">Teacher / Administrator</option>
-                    <option value="student">Student Portal</option>
+                    <option value="teacher">Teacher Terminal Access Node (100 Accounts)</option>
+                    <option value="student">Student Terminal Access Node (5,000 Accounts)</option>
                 </select>
             </div>
             <div class="form-group">
-                <label>User ID / Roll Number</label>
-                <input type="text" id="loginId" placeholder="Enter ID (e.g., admin or 101)">
+                <label>Workspace Username ID</label>
+                <input type="text" id="loginId" placeholder="e.g., TCH01 or STU1001">
             </div>
             <div class="form-group">
-                <label>Password</label>
-                <input type="password" id="loginPassword" placeholder="Enter Password">
+                <label>Access Credential Passcode</label>
+                <input type="password" id="loginPassword" placeholder="••••••••••••">
             </div>
-            <button class="btn-primary" onclick="handleLogin()">Access Dashboard</button>
+            <button class="btn-primary" onclick="handleLogin()">Enter Workspace</button>
         </div>
     </div>
 
     <!-- 2. TEACHER PORTAL -->
     <div id="teacherPortal" class="panel">
         <button class="btn-logout" onclick="handleLogout()">Logout</button>
-        <h2>👩‍🏫 Teacher Control Center</h2>
+        <h2 id="teacherWelcomeTitle">👩‍🏫 Teacher Control Center</h2>
         
-        <!-- Teacher Sub-Navigation tabs for layout management -->
         <div class="nav-tabs">
-            <button class="tab-btn active-tab" onclick="switchTeacherTab('attendance')">Attendance</button>
-            <button class="tab-btn" onclick="switchTeacherTab('passwords')">Manage Passwords</button>
-            <button class="tab-btn" onclick="switchTeacherTab('settings')">School Settings</button>
+            <button class="tab-btn active-tab" onclick="switchTeacherTab('attendance', event)">Attendance</button>
+            <button class="tab-btn" onclick="switchTeacherTab('passwords', event)">Manage Passwords</button>
+            <button class="tab-btn" onclick="switchTeacherTab('notices', event)">Post Notice</button>
         </div>
 
-        <!-- Tab A: Attendance Panel -->
-        <div id="tabAttendance" class="teacher-tab-content">
-            <h3>Daily Class Attendance</h3>
-            <div id="attendanceList"></div>
-            <div style="text-align: center; margin-top: 15px;">
-                <button class="btn-success" onclick="alert('Attendance Saved!')">Submit Records</button>
-            </div>
+        <!-- Attendance Screen -->
+        <div id="tabAttendance" class="teacher-content">
+            <h3>Daily Class Attendance (5,000 Students Database)</h3>
+            <input type="text" class="search-box" id="attSearch" placeholder="Type student Name or Roll Number to filter instantly..." onkeyup="searchStudentAttendance()">
+            <table class="student-table">
+                <thead><tr><th>Roll ID</th><th>Name</th><th>Class Batch</th><th>Status</th><th>Action</th></tr></thead>
+                <tbody id="attendanceTableBody"></tbody>
+            </table>
         </div>
 
-        <!-- Tab B: Password Manager (Teacher sets student passwords here) -->
-        <div id="tabPasswords" class="teacher-tab-content" style="display:none;">
-            <h3>🔑 Student Password & Account Manager</h3>
-            <div id="passwordManagerList"></div>
+        <!-- Password Manager Screen -->
+        <div id="tabPasswords" class="teacher-content" style="display:none;">
+            <h3>🔑 Security Credentials Manager</h3>
+            <input type="text" class="search-box" id="passSearch" placeholder="Search Student details to change password..." onkeyup="searchStudentPasswords()">
+            <table class="student-table">
+                <thead><tr><th>Roll ID</th><th>Name</th><th>Password Key</th><th>Action</th></tr></thead>
+                <tbody id="passwordTableBody"></tbody>
+            </table>
         </div>
 
-        <!-- Tab C: Custom School Name Settings -->
-        <div id="tabSettings" class="teacher-tab-content" style="display:none;">
-            <h3>⚙️ Customise Branding</h3>
+        <!-- Notice Board Manager Screen -->
+        <div id="tabNotices" class="teacher-content" style="display:none;">
+            <h3>📢 Publish Campus Notices</h3>
             <div class="form-group">
-                <label>Change School Name:</label>
-                <input type="text" id="inputSchoolName" value="Global Public School">
+                <label>Notice Title</label>
+                <input type="text" id="noticeTitle" placeholder="e.g., Summer Vacation Announcement">
             </div>
-            <button class="btn-success" onclick="updateSchoolName()">Save New Branding Name</button>
+            <div class="form-group">
+                <label>Notice Description Content</label>
+                <input type="text" id="noticeContent" placeholder="Enter full details here...">
+            </div>
+            <button class="btn-success" onclick="createNewNotice()">Publish Notice Board Message</button>
         </div>
     </div>
 
     <!-- 3. STUDENT PORTAL -->
     <div id="studentPortal" class="panel">
         <button class="btn-logout" onclick="handleLogout()">Logout</button>
-        <h2>👨‍🎓 Student Portal</h2>
-        <div class="student-row">
-            <strong>Welcome back:</strong>
-            <span id="profileName">-</span>
-        </div>
-        <div class="student-row">
-            <strong>Roll Number:</strong>
-            <span id="profileId">-</span>
-        </div>
-        <div class="student-row">
-            <strong>Today's Attendance Status:</strong>
-            <span id="profileStatus">-</span>
-        </div>
+        <h2 id="studentWelcomeTitle">👨‍🎓 Student Dashboard Profile</h2>
+        
+        <h3>📢 Live Active School Notices</h3>
+        <div id="studentNoticePanel"></div>
+
+        <h3>📋 Your Academic Records</h3>
+        <table class="student-table">
+            <tr><td><strong>Student Name:</strong></td><td id="profName">-</td></tr>
+            <tr><td><strong>Roll Number:</strong></td><td id="profId">-</td></tr>
+            <tr><td><strong>Assigned Batch Class:</strong></td><td id="profClass">-</td></tr>
+            <tr><td><strong>Today's Attendance:</strong></td><td id="profStatus">-</td></tr>
+        </table>
     </div>
 </div>
 
 <script>
-    // ERP Core App Database Memory Space
-    let currentSchoolName = "Global Public School";
+    // Core Databases simulated completely in local frontend memory
+    let teachersDatabase = [];
+    let studentsDatabase = [];
+    let schoolNotices = [
+        { title: "🎒 School ERP Live Notice", content: "Welcome to our new GitHub Campus Management System node portal." }
+    ];
     let loggedInUser = null;
 
-    // Student accounts database showing passwords set by default or by teacher
-    let studentDatabase = [
-        { id: "101", name: "Rahul Sharma", password: "user123", status: "Not Marked" },
-        { id: "102", name: "Priya Patel", password: "user456", status: "Not Marked" }
-    ];
+    // Automatically generate 100 Teachers and 5,000 Students safely
+    function initializeMassData() {
+        // 1. Generate 100 Teachers (IDs: TCH01 to TCH100, Passwords: teachpass01...)
+        for (let i = 1; i <= 100; i++) {
+            let numStr = i < 10 ? '0' + i : i;
+            teachersDatabase.push({
+                id: "TCH" + numStr,
+                name: "Teacher Professor " + i,
+                password: "teachpass" + numStr
+            });
+        }
 
-    // Login Verification Access Logic
+        // 2. Generate 5,000 Students (IDs: STU1001 to STU6000, Passwords: studpass1001...)
+        for (let s = 1001; s <= 6000; s++) {
+            studentsDatabase.push({
+                id: "STU" + s,
+                name: "Student Name " + (s - 1000),
+                password: "studpass" + s,
+                classBatch: "Class " + (1 + (s % 12)),
+                status: "Not Marked"
+            });
+        }
+    }
+    initializeMassData();
+
+    // Sign-In Authentication Control Logic (No backend required)
     function handleLogin() {
         const role = document.getElementById('loginRole').value;
         const idInput = document.getElementById('loginId').value.trim();
         const passwordInput = document.getElementById('loginPassword').value;
 
         if (role === 'teacher') {
-            // Hardcoded developer/teacher credential check
-            if (idInput === 'admin' && passwordInput === 'admin123') {
-                showPanel('teacherPortal');
-                renderTeacherAttendance();
-                renderPasswordManager();
+            let teacher = teachersDatabase.find(t => t.id === idInput);
+            if (teacher && teacher.password === passwordInput) {
+                loggedInUser = teacher;
+                showActivePanel('teacherPortal');
+                document.getElementById('teacherWelcomeTitle').innerText = `👩‍🏫 Welcome, ${teacher.name} (${teacher.id})`;
+                renderAttendanceRows(studentsDatabase.slice(0, 8)); // Display first 8 entries initially
+                renderPasswordRows(studentsDatabase.slice(0, 8));
             } else {
-                alert("Invalid Teacher ID or Password! (Hint: Use ID 'admin' and Password 'admin123')");
-            }
-        } else if (role === 'student') {
-            // Find student inside matching records array
-            let student = studentDatabase.find(s => s.id === idInput);
-            
-            if (student && student.password === passwordInput) {
-                loggedInUser = student;
-                showPanel('studentPortal');
-                renderStudentProfile();
-            } else {
-                alert("Invalid Roll Number or Student Password!");
-            }
-        }
-    }
-
-    // Logout cleanup routine
-    function handleLogout() {
-        loggedInUser = null;
-        document.getElementById('loginId').value = "";
-        document.getElementById('loginPassword').value = "";
-        showPanel('loginPanel');
-    }
-
-    // Screen navigation helper functions
-    function showPanel(panelId) {
-        document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-        document.getElementById(panelId).classList.add('active');
-    }
-
-    function switchTeacherTab(tabName) {
-        document.querySelectorAll('.teacher-tab-content').forEach(el => el.style.display = 'none');
-        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active-tab'));
-        
-        if(tabName === 'attendance') {
-            document.getElementById('tabAttendance').style.display = 'block';
-        } else if(tabName === 'passwords') {
-            document.getElementById('tabPasswords').style.display = 'block';
-        } else if(tabName === 'settings') {
-            document.getElementById('tabSettings').style.display = 'block';
-        }
-        event.target.classList.add('active-tab');
-    }
-
-    // Custom school branding updater tool
-    function updateSchoolName() {
-        const newName = document.getElementById('inputSchoolName').value.trim();
-        if(newName !== "") {
-            currentSchoolName = newName;
-            document.getElementById('displaySchoolName').innerText = "🏫 " + newName;
