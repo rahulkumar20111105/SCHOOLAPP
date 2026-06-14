@@ -76,8 +76,8 @@
 </div>
 
 <script>
-    // 🛑 यहाँ अपना नया उत्पन्न हुआ गूगल स्क्रिप्ट वेब ऐप URL पेस्ट करें
-    const API_URL = "https://script.google.com/macros/s/AKfycbxHBUhVhjuZgEbQzqlOM6zF1FTQQB43RFQL6I-UGcrTp13DGTmK151gGq3uaUsbJUrU/exec"; 
+    // 🛑 LINE 75: यहाँ अपना नया उत्पन्न हुआ गूगल स्क्रिप्ट वेब ऐप URL पेस्ट करें
+    const API_URL = "https://script.google.com/macros/s/AKfycbxdtxvJk-NGXym4owp5ZPYeEM9_NDeo_G5x_7u3iBJD-l37zynQjvYB7gdFVNPxOTlY/exec"; 
 
     // पासवर्ड डिक्शनरी
     const LOCAL_PASSWORDS = {
@@ -92,7 +92,7 @@
 
     function handleLogin() {
         const role = document.getElementById('role-select').value;
-        const password = document.getElementById('password-input').value;
+        const password = document.getElementById('password-input').value.trim();
 
         if (role === 'teacher' && password === LOCAL_PASSWORDS.teacher) {
             userSessionPassword = password;
@@ -129,13 +129,13 @@
         showScreen('login-screen');
     }
 
-    // नया अपलोड फ़ंक्शन जो CORS एरर को हमेशा के लिए बायपास करता है
+    // नया अपलोड फ़ंक्शन
     async function uploadData() {
         const type = document.getElementById('upload-type').value;
-        const subject = document.getElementById('upload-subject').value;
-        const title = document.getElementById('upload-title').value;
+        const subject = document.getElementById('upload-subject').value.trim();
+        const title = document.getElementById('upload-title').value.trim();
         const targetClass = document.getElementById('upload-class').value;
-        let link = document.getElementById('upload-link').value;
+        let link = document.getElementById('upload-link').value.trim();
 
         if(!subject || !title || !link) return alert("Please fill out all input text items.");
 
@@ -150,13 +150,12 @@
             id: Date.now(), 
             type: type, 
             subject: subject, 
-            title: title, 
             class: targetClass, 
+            title: title, 
             link: link 
         };
 
         try {
-            // 'no-cors' और text/plain ब्राउज़र के नेटवर्क सबमिशन एरर को रोकते हैं
             await fetch(API_URL, {
                 method: 'POST',
                 mode: 'no-cors',
@@ -168,32 +167,32 @@
             document.getElementById('upload-title').value = "";
             document.getElementById('upload-link').value = "";
         } catch (error) {
-            alert("Submission error. Please check your web app setup.");
+            alert("Network submission error.");
         }
     }
 
-    // नया छात्र फ़ीड लोडिंग फ़ंक्शन
-    async function loadStudentContent() {
+    // ✅ नया JSONP फ़ंक्शन जो पुराने loadStudentContent को हटाकर सुरक्षा एरर खत्म करता है
+    function loadStudentContent() {
         const listContainer = document.getElementById('lecture-list');
         listContainer.innerHTML = "Opening secure link stream...";
 
-        try {
-            let response = await fetch(`${API_URL}?pass=${userSessionPassword}`);
-            let data = await response.json();
+        const callbackName = 'jsonp_callback_' + Math.round(Math.random() * 100000);
+        
+        window[callbackName] = function(data) {
+            delete window[callbackName];
+            const oldScript = document.getElementById('jsonp-script-tag');
+            if(oldScript) oldScript.remove();
 
             listContainer.innerHTML = "";
             if (!data || data.length === 0) {
-                listContainer.innerHTML = "<p>No study updates published for your class room yet.</p>";
+                listContainer.innerHTML = "<p style='text-align:center;color:#666;'>No study updates published for your class room yet.</p>";
                 return;
             }
 
             data.reverse().forEach(item => {
                 const card = document.createElement('div');
                 card.className = "card";
-                card.innerHTML = `
-                    <span class="tag">${item.subject.toUpperCase()}</span>
-                    <h3>${item.title}</h3>
-                `;
+                card.innerHTML = `<span class="tag">${item.subject.toUpperCase()}</span><h3>${item.title}</h3>`;
 
                 if (item.type === 'video') {
                     card.innerHTML += `<iframe src="${item.link}" allowfullscreen></iframe>`;
@@ -202,9 +201,12 @@
                 }
                 listContainer.appendChild(card);
             });
-        } catch (error) {
-            listContainer.innerHTML = "<p style='color:red;'>Error updating feed stream elements.</p>";
-        }
+        };
+
+        const script = document.createElement('script');
+        script.id = 'jsonp-script-tag';
+        script.src = `${API_URL}?pass=${userSessionPassword}&callback=${callbackName}`;
+        document.body.appendChild(script);
     }
 </script>
 </body>
