@@ -1,0 +1,28 @@
+async function sendLoginRequest() {
+    const role = document.getElementById('userRole')?.value || document.getElementById('loginRole')?.value;
+    const password = document.getElementById('userPassword')?.value || document.getElementById('loginPassword')?.value;
+    
+    // FIX: Fallback to local only if running on your machine, otherwise use a placeholder production link
+    const backendHost = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1" 
+        ? "http://127.0.0.1:8000" 
+        : "https://onrender.com"; // Replace this string with your live Render URL later
+
+    try {
+        const response = await fetch(`${backendHost}/api/login`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ role, password })
+        });
+        
+        const result = await response.json();
+        if (response.ok) {
+            alert("Workspace Entry Approved!");
+            // Screen rendering progression logic here
+        } else {
+            alert("Access Denied: " + result.detail);
+        }
+    } catch (error) {
+        console.error("Network Error:", error);
+        alert("Server Connectivity Error! Your GitHub page cannot reach your backend. Make sure your cloud service is running.");
+    }
+}
