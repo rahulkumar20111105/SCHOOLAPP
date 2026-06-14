@@ -38,7 +38,7 @@
         <h2 id="portal-title">Digital School Campus System</h2>
     </div>
 
-    <!-- GATEWAY LOGIN SCREEN -->
+    <!-- MAIN ACCESS GATEWAY LOGIN -->
     <div id="auth-view" class="view-panel active">
         <h2>System Sign-In</h2>
         <label>Select Workspace Terminal Mode</label>
@@ -60,7 +60,7 @@
             <button class="tab-btn" onclick="switchTab(this, 't-bulletins')">Notices & Bulletins</button>
         </div>
 
-        <!-- FINANCE VIEW PANEL -->
+        <!-- FINANCE TAB -->
         <div id="t-finance" class="view-panel active">
             <h3>Institutional Ledger Analytics</h3>
             <div class="metrics-grid">
@@ -77,7 +77,7 @@
             <button onclick="submitInvoiceData()">Commit Accounting Receipt</button>
         </div>
 
-        <!-- ENROLLMENT WORKSPACE PANEL -->
+        <!-- ADMISSIONS TAB -->
         <div id="t-admissions" class="view-panel">
             <h3>Process New Student Enrolment</h3>
             <label>Assign Unique Student ID</label><input type="text" id="adm-id" placeholder="e.g., STU1001">
@@ -90,7 +90,7 @@
             <button onclick="submitAdmissionRecord()">Finalize Enrollment & ID Profile</button>
         </div>
 
-        <!-- HOMEWORK QUIZ BUILDER PANEL -->
+        <!-- HW QUIZ GENERATOR TAB -->
         <div id="t-builders" class="view-panel">
             <h3>Homework Quiz Generator Engine</h3>
             <label>Target Student Class</label>
@@ -102,7 +102,7 @@
             <button onclick="submitQuizBuilder()">Deploy Live Assessment</button>
         </div>
 
-        <!-- ROSTER NOTICES BULLETIN PANEL -->
+        <!-- NOTICES TAB -->
         <div id="t-bulletins" class="view-panel">
             <h3>Publish System Notices & Bulletins</h3>
             <label>Communication Category Type</label>
@@ -116,7 +116,7 @@
         <button onclick="logout()" style="background:#64748b; margin-top:20px;">Terminate Session</button>
     </div>
 
-    <!-- STUDENT SYSTEM PROFILE INTERFACE -->
+    <!-- STUDENT VIEW LAYER -->
     <div id="student-view" class="hidden">
         <div class="tab-menu">
             <button class="tab-btn active" onclick="switchTab(this, 's-profile')">Digital ID Card</button>
@@ -125,7 +125,7 @@
             <button class="tab-btn" onclick="switchTab(this, 's-notices')">School Board Notices</button>
         </div>
 
-        <!-- DIGITAL RENDERING STUDENT ID WORKSPACE -->
+        <!-- STUDENT ID CARD -->
         <div id="s-profile" class="view-panel active">
             <div class="id-card">
                 <h3>STUDENT ID CARD</h3>
@@ -141,21 +141,26 @@
             </div>
         </div>
 
-        <!-- FINANCE TAB STREAM -->
+        <!-- STUDENT RECEIPTS -->
         <div id="s-finance" class="view-panel">
             <h3>Your Invoice & Receipts History</h3>
             <div id="student-finance-feed">No data fetched yet.</div>
         </div>
 
-        <!-- EVALUATIONS QUIZ RUNNER TAB -->
+        <!-- STUDENT EXAMS -->
         <div id="s-homework" class="view-panel">
             <h3>Pending Homework Quiz Assessments</h3>
             <div id="student-quiz-feed">No active homework deployed yet.</div>
         </div>
 
-        <!-- CENTRAL BOARD BULLETINS TAB -->
+        <!-- STUDENT NOTICES -->
         <div id="s-notices" class="view-panel">
             <h3>Live Classroom Bulletin Streams</h3>
             <div id="student-bulletin-feed">Pulling school board notice datasets...</div>
         </div>
         <button onclick="logout()" style="background:#64748b; margin-top:20px;">Terminate Session</button>
+    </div>
+</div>
+
+<script>
+    // 🔗 Fixed and verified secure multi-tab database engine connection
