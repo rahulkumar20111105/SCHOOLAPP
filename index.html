@@ -76,10 +76,10 @@
 </div>
 
 <script>
-    // Paste your newly generated Apps Script Web App URL right here
+    // 🛑 यहाँ अपना नया उत्पन्न हुआ गूगल स्क्रिप्ट वेब ऐप URL पेस्ट करें
     const API_URL = "YOUR_GOOGLE_WEB_APP_URL"; 
 
-    // Local dictionary matching passwords for interface routing
+    // पासवर्ड डिक्शनरी
     const LOCAL_PASSWORDS = {
         teacher: "teacher2026",
         class9: "student09",
@@ -129,7 +129,7 @@
         showScreen('login-screen');
     }
 
-    // Securely push assets straight to Google Sheets with token password verification
+    // नया अपलोड फ़ंक्शन जो CORS एरर को हमेशा के लिए बायपास करता है
     async function uploadData() {
         const type = document.getElementById('upload-type').value;
         const subject = document.getElementById('upload-subject').value;
@@ -139,7 +139,6 @@
 
         if(!subject || !title || !link) return alert("Please fill out all input text items.");
 
-        // Automatically convert share links to inline iframe embeds
         if (link.includes("watch?v=")) {
             link = link.replace("watch?v=", "embed/");
         } else if (link.includes("youtu.be/")) {
@@ -147,7 +146,7 @@
         }
 
         const payload = { 
-            authPass: userSessionPassword, // Passes the secure teacher token
+            authPass: userSessionPassword,
             id: Date.now(), 
             type: type, 
             subject: subject, 
@@ -157,10 +156,11 @@
         };
 
         try {
+            // 'no-cors' और text/plain ब्राउज़र के नेटवर्क सबमिशन एरर को रोकते हैं
             await fetch(API_URL, {
                 method: 'POST',
                 mode: 'no-cors',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 'Content-Type': 'text/plain' },
                 body: JSON.stringify(payload)
             });
             alert("Success! Material uploaded straight to Google Sheet database.");
@@ -168,17 +168,16 @@
             document.getElementById('upload-title').value = "";
             document.getElementById('upload-link').value = "";
         } catch (error) {
-            alert("Network submission error.");
+            alert("Submission error. Please check your web app setup.");
         }
     }
 
-    // Pull filtered dataset from database verified securely by password
+    // नया छात्र फ़ीड लोडिंग फ़ंक्शन
     async function loadStudentContent() {
         const listContainer = document.getElementById('lecture-list');
         listContainer.innerHTML = "Opening secure link stream...";
 
         try {
-            // Passes session password to query endpoint securely
             let response = await fetch(`${API_URL}?pass=${userSessionPassword}`);
             let data = await response.json();
 
